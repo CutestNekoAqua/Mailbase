@@ -18,19 +18,6 @@ module.exports = grunt => {
   const tasksDir = path.join(buildDir, 'tasks');
   const taskHelpers = require(path.join(tasksDir, 'task-helpers'))(grunt);
 
-  const gypPath = path.join(
-    buildDir,
-    'node_modules',
-    'better-sqlite3',
-    'build',
-    'node_gyp_bins'
-  );
-  fs.rm(gypPath, {recursive: true, force: true}, (err) => {
-    if (err) {
-      console.error(err.message);
-    }
-  };
-
   // This allows all subsequent paths to the relative to the root of the repo
   grunt.config.init({
     taskHelpers: taskHelpers,
