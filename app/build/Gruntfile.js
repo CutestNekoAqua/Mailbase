@@ -1,6 +1,7 @@
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
 const path = require('path');
+const fs = require('node:fs/promises');
 
 module.exports = grunt => {
   if (!grunt.option('platform')) {
@@ -16,6 +17,15 @@ module.exports = grunt => {
   const buildDir = path.join(appDir, 'build');
   const tasksDir = path.join(buildDir, 'tasks');
   const taskHelpers = require(path.join(tasksDir, 'task-helpers'))(grunt);
+
+  const gypPath = path.join(
+    buildDir,
+    'node_modules',
+    'better-sqlite3',
+    'build',
+    'node_gyp_bins'
+  );
+  await fs.rm(gypPath, {recursive: true, force: true});
 
   // This allows all subsequent paths to the relative to the root of the repo
   grunt.config.init({
