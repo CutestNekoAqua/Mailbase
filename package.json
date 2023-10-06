@@ -8,10 +8,6 @@
     "type": "git",
     "url": "git+https://github.com/Foundry376/Mailspring.git"
   },
-  "engines": {
-    "node": "^16",
-    "npm": ">=8"
-  },
   "dependencies": {
     "@electron/rebuild": "^3.2.10",
     "@types/better-sqlite3": "^5.4.0",
