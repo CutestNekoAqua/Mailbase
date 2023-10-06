@@ -148,15 +148,6 @@ async function run() {
   // run `npm ls` in ./app - detects missing peer dependencies, etc.
   await npm(`ls`, { cwd: './app', env: 'electron' });
 
-  // if SQlite was STILL not built with HAVE_USLEEP, do not ship this build! We need usleep
-  // support so that multiple processes can connect to the sqlite file at the same time.
-  // Without it, transactions only retry every 1 sec instead of every 10ms, leading to
-  // awful db lock contention.
-  if (['linux', 'darwin'].includes(process.platform) && (await sqliteMissingUsleep())) {
-    console.error(`better-sqlite compiled without -HAVE_USLEEP, do not ship this build!`);
-    process.exit(1001);
-  }
-
   // write the marker with the electron version
   fs.writeFileSync(cacheVersionPath, npmElectronTarget);
 
