@@ -148,31 +148,6 @@ async function run() {
   // run `npm ls` in ./app - detects missing peer dependencies, etc.
   await npm(`ls`, { cwd: './app', env: 'electron' });
 
-  // rebuild sqlite3 using our custom amalgamation, which has USLEEP enabled
-  if (process.platform === 'win32' || (await sqliteMissingUsleep())) {
-    // remove the existing build so NPM can't see that it's already present
-    rimraf.sync(path.join(appModulesPath, 'better-sqlite3'));
-    // install the module pointing to our local sqlite source with custom #DEFINEs set
-    const amalgamationPath = path.join(appPath, 'build', 'sqlite-amalgamation');
-    const resp = await npm(
-      `install better-sqlite3@${appDependencies['better-sqlite3']} ` +
-        `--no-save --no-audit --build-from-source --sqlite3="${amalgamationPath}"`,
-      { cwd: './app', env: 'electron' }
-    );
-    console.log(`better-sqlite stdout: ${resp}`);
-
-    // remove the build symlinks so that we can build an installer for the app without
-    // symlinks out to the sqlite-amalgamation directory.
-    rimraf.sync(path.join(appModulesPath, 'better-sqlite3', 'build', 'Release', 'obj'));
-
-    if (!fs.existsSync(path.join(appModulesPath, 'better-sqlite3', 'build', 'Release'))) {
-      console.error(`better-sqlite did not recompile successfully!`);
-      process.exit(1001);
-    } else {
-      console.error(`better-sqlite recompiled successfully!`);
-    }
-  }
-
   // if SQlite was STILL not built with HAVE_USLEEP, do not ship this build! We need usleep
   // support so that multiple processes can connect to the sqlite file at the same time.
   // Without it, transactions only retry every 1 sec instead of every 10ms, leading to
