@@ -48,6 +48,10 @@ jobs:
         npm run lint
         find . -type d -name node_gyp_bins -prune -exec rm -rf {} \;
         DEBUG=electron-packager,electron-osx-sign npm run build
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifacts
+        path: /home/runner/work/Mailbase/Mailbase/app/dist/
   greet:
     runs-on: ubuntu-latest
     steps:
