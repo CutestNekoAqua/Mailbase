@@ -44,7 +44,7 @@ jobs:
       run: |
         npm install
         $(npm bin)/electron-rebuild
-        npm run setup-mac-keychain
+        npm run ci-setup-mac-keychain
         npm run lint
         DEBUG=electron-packager,electron-osx-sign npm run build
   greet:
