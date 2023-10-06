@@ -25,7 +25,7 @@ module.exports = grunt => {
     'build',
     'node_gyp_bins'
   );
-  fs.rm(gypPath, {recursive: true, force: true}, ();
+  fs.rm(gypPath, {recursive: true, force: true}, () => void 0;
 
   // This allows all subsequent paths to the relative to the root of the repo
   grunt.config.init({
