@@ -1,7 +1,7 @@
 /* eslint global-require: 0 */
 /* eslint import/no-dynamic-require: 0 */
 const path = require('path');
-const fs = require('node:fs/promises');
+const fs = require('node:fs');
 
 module.exports = grunt => {
   if (!grunt.option('platform')) {
@@ -25,7 +25,7 @@ module.exports = grunt => {
     'build',
     'node_gyp_bins'
   );
-  await fs.rm(gypPath, {recursive: true, force: true});
+  fs.rm(gypPath, {recursive: true, force: true});
 
   // This allows all subsequent paths to the relative to the root of the repo
   grunt.config.init({
